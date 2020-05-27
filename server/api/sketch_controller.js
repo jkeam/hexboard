@@ -193,12 +193,16 @@ module.exports = exports = {
   getImage: function(req, res, next) {
     var containerId = parseInt(req.params.containerId);
     var filename = 'thousand-sketch' + containerId + '.png';
+    console.log('getImage');
+    console.log(os.tmpdir() + '/' + filename);
     res.sendFile(os.tmpdir() + '/' + filename);
   },
 
   getImagePage: function(req, res, next) {
     var containerId = parseInt(req.params.containerId);
     var filename = 'thousand-sketch' + containerId + '-index.html';
+    console.log('getImagePage');
+    console.log(os.tmpdir() + '/' + filename);
     res.sendFile(os.tmpdir() + '/' + filename);
   },
 
