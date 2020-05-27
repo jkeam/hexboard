@@ -52,8 +52,8 @@ Or, create each service individually:
 
 [source, bash]
 ----
-oc new-app -l servicegroup=sketchpod openshift/nodejs~http://github.com/2015-Middleware-Keynote/sketchpod
-oc new-app -e "ACCESS_TOKEN=${ACCESS_TOKEN}" openshift/nodejs~http://github.com/2015-Middleware-Keynote/hexboard
+oc new-app -l servicegroup=sketchpod nodejs:12~http://github.com/2015-Middleware-Keynote/sketchpod
+oc new-app -e "ACCESS_TOKEN=${ACCESS_TOKEN}" nodejs:12~http://github.com/2015-Middleware-Keynote/hexboard
 ----
 
 Then, check the results:
@@ -110,9 +110,9 @@ oc get route
 
 = Configuration
 
-The service configuration is provided via environment variables. These configs can be set while loading a project from a template via the web console or via the `oc process` command.  
+The service configuration is provided via environment variables. These configs can be set while loading a project from a template via the web console or via the `oc process` command.
 
-You can also add environment keys to an existing deployment config using the `oc env` command.  Setting new configuration details will trigger a deployment to distribute your changes (if needed).
+You can also add environment keys to an existing deployment config using the `oc set env` command.  Setting new configuration details will trigger a deployment to distribute your changes (if needed).
 
 #### API Access Token
 
@@ -120,7 +120,7 @@ To set the **required** `ACCESS_TOKEN` config, follow the instructions in the ab
 
 [source, bash]
 ----
-oc env dc/hexboard ACCESS_TOKEN=$(oc whoami -t)
+oc set env dc/hexboard ACCESS_TOKEN=$(oc whoami -t)
 ----
 
 #### Admin Controls
@@ -131,7 +131,7 @@ Set a server-side `ADMIN_TOKEN`:
 
 [source, bash]
 ----
-oc env dc/hexboard ADMIN_TOKEN="${ADMIN_TOKEN}"
+oc set env dc/hexboard ADMIN_TOKEN="${ADMIN_TOKEN}"
 ----
 
 You'll need to set the same token in your browser to reveal the Admin UI controls.  Visit "http://YOUR_HEXBOARD/?admin=YOUR_ADMIN_TOKEN" to add administrative UI controls to your browser.
@@ -143,7 +143,7 @@ You can set the number of winning sketch submissions to three by running the fol
 
 [source, bash]
 ----
-oc env dc/hexboard WINNER_COUNT=3
+oc set env dc/hexboard WINNER_COUNT=3
 ----
 
 #### Hexboard Size
@@ -156,7 +156,7 @@ The number of pods in the hexboard can be controlled by setting the `HEXBOARD_SI
 | large | 513 | _major league_
 | medium | 266 | _cluster pro_
 | small | 108 | _multi machine party_
-| xsmall | 63 | _fun sized_ 
+| xsmall | 63 | _fun sized_
 | tiny | 32 | _large laptop allocation_
 | micro | 24 | _medium laptop allocation_
 | nano | 12 | _small laptop allocation_
@@ -164,7 +164,7 @@ The number of pods in the hexboard can be controlled by setting the `HEXBOARD_SI
 
 [source, bash]
 ----
-oc env dc/hexboard HEXBOARD_SIZE=<hexboard-size>
+oc set env dc/hexboard HEXBOARD_SIZE=<hexboard-size>
 oc get pods -w
 ----
 
@@ -243,4 +243,3 @@ Or, delete the entire project and any included resources:
 ----
 oc delete project hexboard
 ----
-
