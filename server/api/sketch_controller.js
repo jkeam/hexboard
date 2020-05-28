@@ -120,7 +120,7 @@ var postImageToPod = function(sketch, req) {
 };
 
 var parseSketchStream = function(req) {
-  var passthrough = false;
+  var passthrough = true;
   var accumulation = '';
   var stream = req
     .pipe(through(function (chunk, enc, callback) {
