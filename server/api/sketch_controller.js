@@ -34,7 +34,7 @@ var saveIndexFile = function(sketch) {
 }
 
 var saveImageToFile = function(sketch, req) {
-  var filename = 'thousand-sketch' + sketch.containerId + '.png';
+  const filename = 'thousand-sketch' + sketch.containerId + '.png';
   console.log(tag, 'Saving sketch to file:', filename);
   return Rx.Observable.create(function(observer) {
     req.on('end', function() {
@@ -45,7 +45,7 @@ var saveImageToFile = function(sketch, req) {
     req.on('error', function(error) {
       observer.onError(error);
     });
-    var stream = req.pipe(fs.createWriteStream(os.tmpdir() + '/' + filename));
+    req.pipe(fs.createWriteStream(os.tmpdir() + '/' + filename));
   });
 };
 
@@ -119,27 +119,8 @@ var postImageToPod = function(sketch, req) {
   .catch(Rx.Observable.return(sketch));
 };
 
-var parseSketchStream = function(req) {
-  var passthrough = false;
-  var accumulation = '';
-  var stream = req
-    .pipe(through(function (chunk, enc, callback) {
-      if (!passthrough) {
-        accumulation += chunk;
-        var test = 'image/png;base64,';
-        var index = accumulation.indexOf(test);
-        if (index > -1) {
-          passthrough = true;
-          chunk = accumulation.substr(index + test.length);
-        }
-      }
-      if (passthrough) {
-        this.push(chunk);
-      }
-      callback();
-    }))
-    .pipe(base64.decode());
-  return stream;
+const parseSketchStream = function(req) {
+  return req;
 }
 
 var parseSketch = function(req) {
