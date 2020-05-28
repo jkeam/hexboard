@@ -100,7 +100,8 @@
                 "source": {
                     "type": "Git",
                     "git": {
-                        "uri": "http://github.com/2015-Middleware-Keynote/sketchpod"
+                        "uri": "https://github.com/jkeam/sketchpod",
+                        "ref": "feature/update-4-4"
                     }
                 },
                 "strategy": {
@@ -273,8 +274,8 @@
                 "source": {
                     "type": "Git",
                     "git": {
-                        "uri": "http://github.com/ryanj/hexboard",
-                        "ref": "master"
+                        "uri": "https://github.com/jkeam/hexboard",
+                        "ref": "feature/update-4-4"
                     }
                 },
                 "strategy": {
