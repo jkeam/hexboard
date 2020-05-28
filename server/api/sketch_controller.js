@@ -120,7 +120,7 @@ var postImageToPod = function(sketch, req) {
 };
 
 var parseSketchStream = function(req) {
-  var passthrough = true;
+  var passthrough = false;
   var accumulation = '';
   var stream = req
     .pipe(through(function (chunk, enc, callback) {
@@ -128,7 +128,7 @@ var parseSketchStream = function(req) {
         accumulation += chunk;
         var test = 'image/png;base64,';
         var index = accumulation.indexOf(test);
-        if (index > - 1) {
+        if (index > -1) {
           passthrough = true;
           chunk = accumulation.substr(index + test.length);
         }
