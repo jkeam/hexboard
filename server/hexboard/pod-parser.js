@@ -1,7 +1,6 @@
 'use strict';
 
 var Rx = require('rx')
-  , RxNode = require('rx-node')
   , config = require('../config')
   , _ = require('underscore')
   , hexboard = require('./hexboard')

@@ -3,15 +3,12 @@
 var fs = require('fs')
   , os = require('os')
   , Rx = require('rx')
-  , RxNode = require('rx-node')
   , thousandEmitter = require('../hexboard/thousandEmitter')
   , request = require('request')
   , hexboard = require('../hexboard/hexboard')
   , http = require('http')
   , config = require('../config')
   , sketcher = require('../hexboard/sketch')
-  , base64 = require('base64-stream')
-  , through = require('through2')
   , uuid = require('uuid-js');
   ;
 
@@ -119,10 +116,6 @@ var postImageToPod = function(sketch, req) {
   .catch(Rx.Observable.return(sketch));
 };
 
-const parseSketchStream = function(req) {
-  return req;
-}
-
 var parseSketch = function(req) {
   var uid = uuid.create().toString();
   var sketch = {
@@ -130,7 +123,6 @@ var parseSketch = function(req) {
   , cuid: uid
   , submissionId: uid
   };
-  var stream = parseSketchStream(req);
   hexboard.claimHexagon(sketch);
   if (sketch.pod && sketch.pod.url) {  // config.get('PROXY') == ''
     console.log(tag, 'pod.url', sketch.pod.url);
@@ -149,9 +141,9 @@ var parseSketch = function(req) {
   return Rx.Observable.return(sketch)
   .flatMap(function(sketch) {
     return Rx.Observable.forkJoin(
-      saveImageToFile(sketch, stream)
+      saveImageToFile(sketch, req)
     , saveIndexFile(sketch)
-    , postImageToPod(sketch, stream)
+    , postImageToPod(sketch, req)
     ).map(function(arr) {
       return arr[0]
     })
