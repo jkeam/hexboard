@@ -69,7 +69,7 @@ const saveImageToFile = function(sketch, req) {
         stream.on('error', function(err) {
           reject(err);
         });
-      });
+      })
     );
 
     readStream(req).then((data) => {
