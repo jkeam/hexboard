@@ -48,7 +48,7 @@ const saveImageToFile = function(sketch, req) {
     const decodeBase64Image = (dataString) => {
       const matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
 
-      if (matches.length !== 3) {
+      if (!matches || matches.length !== 3) {
         return dataString;
       }
 
