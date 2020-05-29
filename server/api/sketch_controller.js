@@ -46,15 +46,14 @@ const saveImageToFile = function(sketch, req) {
     */
 
     const decodeBase64Image = (dataString) => {
+      const encoding = 'base64';
       const matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/);
 
       if (!matches || matches.length !== 3) {
-        return dataString;
+        return new Buffer(dataString, encoding);
       }
 
-      // response.type = matches[1];
-      // response.data = new Buffer(matches[2], 'base64');
-      return new Buffer(matches[2], 'base64');
+      return new Buffer(matches[2], encoding);
     };
 
     const readStream = (stream) => (
