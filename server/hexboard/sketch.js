@@ -15,9 +15,10 @@ var filenameList = Rx.Observable.fromNodeCallback(fs.readdir)('test/sketches/');
 
 var postRandomImage = function(hostname) {
   filenameList.map(function(filenames) {
-    var index = getRandomInt(0,filenames.length);
-    var filename = filenames[index];
-    var readStream = fs.createReadStream('test/sketches/' + filename);
+    const index = getRandomInt(0, filenames.length);
+    const filename = filenames[index];
+    const readStream = fs.createReadStream('test/sketches/' + filename);
+    readStream.setEncoding('base64');
     var ts = new Date().getTime();
     var url = 'http://' + hostname + '/api/sketch/0?name=Name '+ ts +'&cuid=cuid ' + ts +'&submission_id=' + ts;
     // var url = 'http://sketch.demo.apps.summit3.paas.ninja/demo/sketchpod-1-otzf5' + '/doodle' + '?username=John%20Doe&cuid=test&submission=123';
