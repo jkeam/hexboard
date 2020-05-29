@@ -52,7 +52,7 @@ Or, create each service individually:
 
 [source, bash]
 ----
-oc new-app -l servicegroup=sketchpod nodejs:12~http://github.com/2015-Middleware-Keynote/sketchpod
+oc new-app -l servicegroup=sketchpod nodejs:12~http://github.com/jkeam/sketchpod.git#feature/upgrade-4-4
 oc new-app -e "ACCESS_TOKEN=${ACCESS_TOKEN}" nodejs:12~http://github.com/jkeam/hexboard.git#feature/upgrade-4-4
 ----
 
