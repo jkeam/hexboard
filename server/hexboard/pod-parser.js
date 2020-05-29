@@ -1,19 +1,17 @@
 'use strict';
 
-var Rx = require('rx')
-  , config = require('../config')
-  , _ = require('underscore')
-  , hexboard = require('./hexboard')
-  ;
+const Rx = require('rx');
+const RxNode = require('rx-node');
+const config = require('../config');
+const _ = require('underscore');
+const hexboard = require('./hexboard');
+const tag = 'PODSTREAMS';
 
-var tag = 'PODSTREAMS';
-
-var getRandomInt = function (min, max) {
+const getRandomInt = function (min, max) {
   return Math.floor(Math.random() * (max - min) + min);
 };
 
-var PodParser = function() {
-
+const PodParser = function() {
   var idMap = {};
   var availableIds = _.range(hexboard.layout.count);
 
