@@ -1,7 +1,5 @@
 'use strict';
 
-const Rx = require('rx');
-const RxNode = require('rx-node');
 const config = require('../config');
 const _ = require('underscore');
 const hexboard = require('./hexboard');
