@@ -30,10 +30,11 @@ var saveIndexFile = function(sketch) {
     });
 }
 
-var saveImageToFile = function(sketch, req) {
+const saveImageToFile = function(sketch, req) {
   const filename = 'thousand-sketch' + sketch.containerId + '.png';
   console.log(tag, 'Saving sketch to file:', filename);
   return Rx.Observable.create(function(observer) {
+    /*
     req.on('end', function() {
       // console.log('File save complete:', filename);
       observer.onNext(sketch);
@@ -42,7 +43,48 @@ var saveImageToFile = function(sketch, req) {
     req.on('error', function(error) {
       observer.onError(error);
     });
-    req.pipe(fs.createWriteStream(os.tmpdir() + '/' + filename));
+    */
+
+    const decodeBase64Image = (dataString) => {
+      const matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
+
+      if (matches.length !== 3) {
+        return dataString;
+      }
+
+      // response.type = matches[1];
+      // response.data = new Buffer(matches[2], 'base64');
+      return new Buffer(matches[2], 'base64');
+    };
+
+    const readStream = (stream) => (
+      new Promise((resolve, reject) => {
+        let data = '';
+        stream.on('data', function(chunk) {
+          data += chunk;
+        });
+        stream.on('end', function() {
+          resolve(data);
+        });
+        stream.on('error', function(err) {
+          reject(err);
+        });
+      });
+    );
+
+    readStream(req).then((data) => {
+      const fileContents = decodeBase64Image(data);
+      fs.writeFile(`${os.tempdir()}/${filename}`, fileContents, function (err) {
+        if (err) {
+          return observer.onError(error);
+        }
+        observer.onNext(sketch);
+        observer.onCompleted();
+      });
+    }).catch((error) => {
+      observer.onError(error);
+    });
+    // req.pipe(fs.createWriteStream(os.tmpdir() + '/' + filename));
   });
 };
 
@@ -116,12 +158,12 @@ var postImageToPod = function(sketch, req) {
   .catch(Rx.Observable.return(sketch));
 };
 
-var parseSketch = function(req) {
-  var uid = uuid.create().toString();
-  var sketch = {
-    name: req.query.name
-  , cuid: uid
-  , submissionId: uid
+const parseSketch = function(req) {
+  const uid = uuid.create().toString();
+  const sketch = {
+    name: req.query.name,
+    cuid: uid,
+    submissionId: uid
   };
   hexboard.claimHexagon(sketch);
   if (sketch.pod && sketch.pod.url) {  // config.get('PROXY') == ''
