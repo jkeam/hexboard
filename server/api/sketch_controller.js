@@ -74,7 +74,7 @@ const saveImageToFile = function(sketch, req) {
 
     readStream(req).then((data) => {
       const fileContents = decodeBase64Image(data);
-      fs.writeFile(`${os.tempdir()}/${filename}`, fileContents, function (err) {
+      fs.writeFile(`${os.tmpdir()}/${filename}`, fileContents, function (err) {
         if (err) {
           return observer.onError(error);
         }
